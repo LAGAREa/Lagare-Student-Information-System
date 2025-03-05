@@ -74,4 +74,23 @@ class SubjectController extends Controller
     {
         return view('admin.subjects.show', compact('subject'));
     }
+
+    public function studentSubjects()
+    {
+        // Get the current student
+        $student = \App\Models\Student::where('email', auth()->user()->email)->first();
+        
+        if (!$student) {
+            return view('student.subjects', ['subjects' => collect([])]);
+        }
+
+        // Get enrolled subjects through enrollments
+        $subjects = Subject::whereIn('id', function($query) use ($student) {
+            $query->select('subject_id')
+                ->from('enrollments')
+                ->where('student_id', $student->id);
+        })->get();
+
+        return view('student.subjects', compact('subjects'));
+    }
 }

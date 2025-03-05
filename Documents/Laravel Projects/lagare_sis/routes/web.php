@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('student.dashboard');
         })->name('student.dashboard');
         Route::get('/student/view-grades', [GradeController::class, 'viewGrades'])->name('student.view-grades');
+        Route::get('/student/subjects', [SubjectController::class, 'studentSubjects'])->name('student.subjects');
     });
 
     // Admin routes
