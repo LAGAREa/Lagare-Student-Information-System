@@ -33,15 +33,80 @@
         }
         
         .sidebar {
-            min-height: 100vh;
-            background-color: #4e73df;
-            background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
             width: 14rem;
-            transition: width 0.15s ease-in-out;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            z-index: 1;
         }
         
         .sidebar.toggled {
             width: 6.5rem;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar.toggled .sidebar-header {
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        #sidebarToggle {
+            color: white;
+            background: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        #sidebarToggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+        }
+
+        #sidebarToggle i {
+            font-size: 1.2rem;
+        }
+
+        .sidebar .nav-item {
+            position: relative;
+        }
+        
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            width: 1.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .sidebar.toggled .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .sidebar.toggled .nav-link i {
+            margin: 0;
+            font-size: 1.1rem;
+            width: auto;
         }
         
         .sidebar.toggled .nav-link span {
@@ -51,47 +116,53 @@
         .sidebar.toggled .sidebar-brand-text {
             display: none;
         }
-        
-        .sidebar-brand {
-            height: 4.375rem;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 800;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.05rem;
-            z-index: 1;
-        }
 
-        .nav-item {
-            position: relative;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
-            width: 100%;
-            font-weight: 500;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-link:hover {
+        .sidebar .nav-item .nav-link:hover {
             color: #fff;
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-        .nav-link.active {
+        .sidebar .nav-item.active .nav-link {
             color: #fff;
             font-weight: 600;
         }
 
-        .nav-link i {
-            min-width: 2rem;
-            font-size: 0.85rem;
-            text-align: center;
+        .content-wrapper {
+            margin-left: 14rem;
+            transition: margin 0.3s ease-in-out;
+        }
+
+        .sidebar.toggled ~ .content-wrapper {
+            margin-left: 6.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 6.5rem;
+            }
+            
+            .sidebar .nav-link {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .sidebar .nav-link i {
+                margin: 0;
+                font-size: 1.1rem;
+                width: auto;
+            }
+            
+            .sidebar .nav-link span {
+                display: none;
+            }
+            
+            .sidebar .sidebar-brand-text {
+                display: none;
+            }
+
+            .content-wrapper {
+                margin-left: 6.5rem;
+            }
         }
 
         .topbar {
@@ -135,12 +206,6 @@
             background-color: #4e73df;
         }
 
-        .content-wrapper {
-            min-height: 100vh;
-            padding: 1.5rem;
-            background-color: #f8f9fc;
-        }
-
         .img-profile {
             height: 2rem;
             width: 2rem;
@@ -150,20 +215,6 @@
             margin-right: 0.5rem;
             color: #3a3b45;
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 6.5rem;
-            }
-            
-            .sidebar .nav-link span {
-                display: none;
-            }
-            
-            .sidebar .sidebar-brand-text {
-                display: none;
-            }
-        }
     </style>
 </head>
 
@@ -171,12 +222,12 @@
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="d-flex align-items-center justify-content-between" style="padding: 1rem;">
+            <div class="sidebar-header">
                 <a class="sidebar-brand-text text-white text-decoration-none" href="{{ Auth::user()->role == 'admin' ? route('admin.dashboard') : route('student.dashboard') }}" style="font-weight: bold; font-size: 1rem;">
                     {{ Auth::user()->role == 'admin' ? 'ADMIN' : 'STUDENT' }}
                 </a>
-                <button class="border-0 bg-transparent p-0" id="sidebarToggle" style="color: white;">
-                    <i class="fas fa-bars" style="font-size: 1.4rem;"></i>
+                <button class="btn p-0" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
 
