@@ -116,7 +116,7 @@ $(document).ready(function() {
     });
 
     // Handle delete button click
-    $('.delete-grade').click(function() {
+    $(document).on('click', '.delete-grade', function() {
         var button = $(this);
         var gradeId = button.data('id');
         var studentName = button.data('student');
@@ -135,9 +135,6 @@ $(document).ready(function() {
                 $.ajax({
                     url: `/admin/grades/${gradeId}`,
                     type: 'DELETE',
-                    data: {
-                        "_token": "{{ csrf_token() }}"
-                    },
                     success: function(response) {
                         Swal.fire(
                             'Deleted!',

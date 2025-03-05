@@ -19,10 +19,10 @@
                     <table class="table table-bordered table-hover" id="enrollmentsTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="bg-primary text-white">Student</th>
-                                <th class="bg-primary text-white">Subject</th>
-                                <th class="bg-primary text-white">Course</th>
-                                <th class="bg-primary text-white">Year Level</th>
+                                <th class="bg-primary text-white sorting">Student</th>
+                                <th class="bg-primary text-white sorting">Subject</th>
+                                <th class="bg-primary text-white sorting">Course</th>
+                                <th class="bg-primary text-white sorting">Year Level</th>
                                 <th class="bg-primary text-white" style="width: 150px">Actions</th>
                             </tr>
                         </thead>
@@ -80,17 +80,49 @@
             background-color: #0b5ed7 !important;
             border-color: #0b5ed7 !important;
         }
+        /* Add DataTables sorting styles */
+        .sorting {
+            position: relative;
+            cursor: pointer;
+        }
+        .sorting:before,
+        .sorting:after {
+            position: absolute;
+            bottom: 0.9em;
+            display: block;
+            opacity: 0.3;
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 0.8em;
+        }
+        .sorting:before {
+            right: 1em;
+            content: "\f0de"; /* up arrow */
+        }
+        .sorting:after {
+            right: 0.5em;
+            content: "\f0dd"; /* down arrow */
+        }
+        .sorting_asc:before {
+            opacity: 1;
+        }
+        .sorting_desc:after {
+            opacity: 1;
+        }
     </style>
 
     @push('scripts')
     <script>
     $(document).ready(function() {
-        // Initialize DataTable with search only
+        // Initialize DataTable with search and sorting
         var table = $('#enrollmentsTable').DataTable({
             paging: false,
             info: false,
             dom: 'rt<"bottom"p><"clear">',
-            order: [],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: -1 } // Disable sorting on Actions column
+            ]
         });
 
         // Move the search input to our custom location
@@ -99,7 +131,7 @@
         });
 
         // Handle delete button click
-        $('.delete-enrollment').click(function() {
+        $(document).on('click', '.delete-enrollment', function() {
             var button = $(this);
             var enrollmentId = button.data('id');
             var studentName = button.data('student');
@@ -118,8 +150,8 @@
                     $.ajax({
                         url: `/admin/enrollments/${enrollmentId}`,
                         type: 'DELETE',
-                        data: {
-                            "_token": "{{ csrf_token() }}"
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response) {
                             Swal.fire(

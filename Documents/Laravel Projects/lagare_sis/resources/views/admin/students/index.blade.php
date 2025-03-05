@@ -101,7 +101,7 @@
         });
 
         // Handle delete button click
-        $('.delete-student').click(function() {
+        $(document).on('click', '.delete-student', function() {
             var button = $(this);
             var studentId = button.data('id');
             var studentName = button.data('name');
@@ -120,9 +120,6 @@
                     $.ajax({
                         url: `/admin/students/${studentId}`,
                         type: 'DELETE',
-                        data: {
-                            "_token": "{{ csrf_token() }}"
-                        },
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
