@@ -70,4 +70,9 @@ class EnrollmentController extends Controller
         $enrollment->delete();
         return redirect()->route('admin.enrollments')->with('success', 'Enrollment deleted successfully.');
     }
+
+    public function show(Enrollment $enrollment)
+    {
+        return view('admin.enrollments.show', compact('enrollment'));
+    }
 }

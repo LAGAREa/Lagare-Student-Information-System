@@ -55,4 +55,9 @@ class SubjectController extends Controller
         $subject->delete();
         return redirect()->route('admin.subjects')->with('success', 'Subject deleted successfully.');
     }
+
+    public function show(Subject $subject)
+    {
+        return view('admin.subjects.show', compact('subject'));
+    }
 }

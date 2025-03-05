@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\User;
+use DataTables;
 
 class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::all();
+        $students = Student::with('user')->get();
         return view('admin.students.index', compact('students'));
     }
 
@@ -85,6 +86,11 @@ class StudentController extends Controller
             return redirect()->route('admin.students')
                 ->with('error', 'An error occurred while deleting the student.');
         }
+    }
+
+    public function show(Student $student)
+    {
+        return view('admin.students.show', compact('student'));
     }
 }
 

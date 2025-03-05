@@ -16,7 +16,6 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Student ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -26,25 +25,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($students as $index => $student)
+                            @foreach($students as $student)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $student->student_id }}</td>
                                     <td>{{ $student->name }}</td>
                                     <td>{{ $student->email }}</td>
                                     <td>{{ $student->course }}</td>
                                     <td>{{ $student->year_level }}</td>
                                     <td>
-                                        <a href="{{ route('admin.students.edit', $student) }}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
+                                        <a href="{{ route('admin.students.show', $student) }}" class="btn btn-view btn-sm">
+                                            View
                                         </a>
-                                        <form action="{{ route('admin.students.destroy', $student) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm delete-student">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('admin.students.edit', $student) }}" class="btn btn-edit btn-sm">
+                                            Edit
+                                        </a>
+                                        <button type="button" class="btn btn-delete btn-sm delete-student" 
+                                                data-id="{{ $student->id }}"
+                                                data-url="{{ route('admin.students.destroy', $student) }}">
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -55,53 +54,38 @@
         </div>
     </div>
 
-    <!-- Include SweetAlert2 CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('partials.datatables-scripts')
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle delete button clicks
-            document.querySelectorAll('.delete-student').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const form = this.closest('form');
-                    
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
+        $(document).ready(function() {
+            var table = $('#dataTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                order: [[0, 'asc']],
+                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                     '<"row"<"col-sm-12"tr>>' +
+                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                language: {
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    search: "Search registered students:",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
             });
 
-            // Show error message if it exists in session
-            @if(session('error'))
-                Swal.fire({
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonColor: '#3085d6'
-                });
-            @endif
-
-            // Show success message if it exists in session
-            @if(session('success'))
-                Swal.fire({
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6'
-                });
-            @endif
+            // Handle delete button clicks
+            $('.delete-student').click(function() {
+                var button = $(this);
+                var url = button.data('url');
+                confirmDelete(url, table, button.closest('tr'));
+            });
         });
     </script>
 @endsection

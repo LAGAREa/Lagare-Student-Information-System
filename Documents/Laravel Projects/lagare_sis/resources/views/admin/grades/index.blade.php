@@ -6,52 +6,90 @@
     <div class="container">
         <h1 class="my-4">Grades</h1>
         <a href="{{ route('admin.grades.create') }}" class="btn btn-primary mb-3">Add Grade</a>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Grades List</h6>
             </div>
-        @endif
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Course</th>
-                    <th>Semester</th>
-                    <th>Subject</th>
-                    <th>Grade</th>
-                    <th>Units</th>
-                    <th>Remark</th>
-                    <th>Curriculum Evaluation</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($grades as $grade)
-                    @php
-                        $enrollment = App\Models\Enrollment::where('student_id', $grade->student_id)
-                            ->where('subject_id', $grade->subject_id)
-                            ->first();
-                    @endphp
-                    <tr>
-                        <td>{{ $grade->student->name }}</td>
-                        <td>{{ $enrollment ? $enrollment->course : $grade->student->course }}</td>
-                        <td>{{ $enrollment ? $enrollment->semester : '-' }}</td>
-                        <td>{{ $grade->subject->name }}</td>
-                        <td>{{ $grade->grade }}</td>
-                        <td>{{ $grade->subject->units }}</td>
-                        <td>{{ $grade->remark }}</td>
-                        <td>{{ $grade->curriculum_evaluation }}</td>
-                        <td>
-                            <a href="{{ route('admin.grades.edit', $grade) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('admin.grades.destroy', $grade) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Subject</th>
+                                <th>Grade</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($grades as $grade)
+                                <tr>
+                                    <td>{{ $grade->student->name }}</td>
+                                    <td>{{ $grade->subject->name }}</td>
+                                    <td>{{ $grade->grade }}</td>
+                                    <td>
+                                        @if($grade->grade >= 75)
+                                            <span class="badge badge-success">Passed</span>
+                                        @else
+                                            <span class="badge badge-danger">Failed</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.grades.show', $grade) }}" class="btn btn-view btn-sm">
+                                            View
+                                        </a>
+                                        <a href="{{ route('admin.grades.edit', $grade) }}" class="btn btn-edit btn-sm">
+                                            Edit
+                                        </a>
+                                        <button type="button" class="btn btn-delete btn-sm delete-grade" 
+                                                data-id="{{ $grade->id }}"
+                                                data-url="{{ route('admin.grades.destroy', $grade) }}">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+
+    @include('partials.datatables-scripts')
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#dataTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                order: [[0, 'asc']],
+                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                     '<"row"<"col-sm-12"tr>>' +
+                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                language: {
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    search: "Search registered grades:",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+
+            // Handle delete button clicks
+            $('.delete-grade').click(function() {
+                var button = $(this);
+                var url = button.data('url');
+                confirmDelete(url, table, button.closest('tr'));
+            });
+        });
+    </script>
 @endsection
