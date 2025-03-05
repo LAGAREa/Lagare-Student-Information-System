@@ -37,8 +37,7 @@
                                         <a href="{{ route('admin.subjects.edit', $subject) }}" class="btn btn-edit btn-sm">
                                             Edit
                                         </a>
-                                        <button type="button" class="btn btn-delete btn-sm delete-subject" 
-                                                data-id="{{ $subject->id }}"
+                                        <button type="button" class="btn btn-delete btn-sm delete-item" 
                                                 data-url="{{ route('admin.subjects.destroy', $subject) }}">
                                             Delete
                                         </button>
@@ -47,6 +46,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-end mt-3">
+                        {{ $subjects->onEachSide(1)->links() }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,34 +58,118 @@
 
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             var table = $('#dataTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                paging: false,
+                ordering: true,
                 order: [[0, 'asc']],
-                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-                     '<"row"<"col-sm-12"tr>>' +
-                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                dom: '<"row"<"col-sm-12 col-md-6"f>>',
                 language: {
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
                     search: "Search registered subjects:",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
-                    }
+                    info: "_TOTAL_ entries",
+                    infoEmpty: "0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)"
                 }
             });
 
             // Handle delete button clicks
-            $('.delete-subject').click(function() {
+            $(document).on('click', '.delete-item', function() {
                 var button = $(this);
                 var url = button.data('url');
-                confirmDelete(url, table, button.closest('tr'));
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Record has been deleted successfully.',
+                                    'success'
+                                ).then(() => {
+                                    button.closest('tr').remove();
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    xhr.responseJSON?.message || 'Cannot delete this record.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
+
+    <style>
+        .pagination {
+            margin: 0;
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+        }
+        .page-link {
+            position: relative;
+            display: block;
+            padding: 8px 12px;
+            margin: 0px 0px 0px -1px;
+            font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.25;
+            color: #4e73df;
+            background-color: #fff;
+            border: 1px solid #dddfeb;
+        }
+        .page-item:first-child .page-link {
+            margin-left: 0;
+            border-top-left-radius: 0.35rem;
+            border-bottom-left-radius: 0.35rem;
+        }
+        .page-item:last-child .page-link {
+            border-top-right-radius: 0.35rem;
+            border-bottom-right-radius: 0.35rem;
+        }
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #4E73DF;
+            border-color: #4E73DF;
+        }
+        .page-item.disabled .page-link {
+            color: #858796;
+            pointer-events: none;
+            cursor: auto;
+            background-color: #fff;
+            border-color: #dddfeb;
+        }
+        .page-link:hover {
+            z-index: 2;
+            color: #224abe;
+            text-decoration: none;
+            background-color: #eaecf4;
+            border-color: #dddfeb;
+        }
+        .page-link:focus {
+            z-index: 3;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+    </style>
 @endsection

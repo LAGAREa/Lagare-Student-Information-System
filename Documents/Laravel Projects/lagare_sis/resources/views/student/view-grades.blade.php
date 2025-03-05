@@ -3,50 +3,77 @@
 @section('title', 'View Grades')
 
 @section('content')
-    <div class="container">
-        <h5>Name: {{ auth()->user()->name }}</h5>
-        @php
-            $student = App\Models\Student::where('email', auth()->user()->email)->first();
-        @endphp
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">My Grades</h1>
+    </div>
 
-        @if($student)
-            @php
-                $enrollment = App\Models\Enrollment::where('student_id', $student->id)->latest()->first();
-            @endphp
-            <h5>Course: {{ $student->course }}</h5>
-            <h5>Year Level: {{ $student->year_level }}</h5>
-            <h5>Semester: {{ $enrollment ? $enrollment->semester : '-' }}</h5>
-        @else
-            <h5>Course: Not found</h5>
-            <h5>Year Level: -</h5>
-            <h5>Semester: -</h5>
-        @endif
-        
-        <h1 class="my-4">Grades</h1>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>Grade</th>
-                    <th>Remark</th>
-                    <th>Curriculum Evaluation</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if(!$student || $grades->isEmpty())
-                    <tr>
-                        <td colspan="4">No grades available.</td>
-                    </tr>
-                @endif
-                @foreach($grades as $grade)
-                    <tr>
-                        <td>{{ $grade->subject->name }}</td>
-                        <td>{{ $grade->grade }}</td>
-                        <td>{{ $grade->remark }}</td>
-                        <td>{{ $grade->curriculum_evaluation }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <!-- Content Row -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Grade List</h6>
+        </div>
+        <div class="card-body">
+            @if(count($grades) > 0)
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Subject Name</th>
+                                <th>Grade</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($grades as $grade)
+                                <tr>
+                                    <td>{{ $grade->subject->subject_code }}</td>
+                                    <td>{{ $grade->subject->name }}</td>
+                                    <td>{{ $grade->grade }}</td>
+                                    <td>
+                                        @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
+                                            <span class="badge badge-success">Passed</span>
+                                        @else
+                                            <span class="badge badge-danger">Failed</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-center">No grades available.</p>
+            @endif
+        </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            paging: false,
+            dom: '<"row"<"col-sm-12 col-md-6"f>>',
+            language: {
+                search: "Search grades:",
+                info: "Showing _START_ to _END_ of _TOTAL_ grades",
+                infoEmpty: "No grades found",
+                infoFiltered: "(filtered from _MAX_ total grades)"
+            }
+        });
+    });
+</script>
+@endpush
+
+<style>
+.badge-success {
+    background-color: #1cc88a;
+    color: white;
+}
+.badge-danger {
+    background-color: #e74a3b;
+    color: white;
+}
+</style>

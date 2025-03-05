@@ -28,4 +28,14 @@ class Grade extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+
+    public function isPassing()
+    {
+        return floatval($this->grade) >= 1.0 && floatval($this->grade) <= 2.75;
+    }
+
+    public function getStatus()
+    {
+        return $this->isPassing() ? 'Passed' : 'Failed';
+    }
 }

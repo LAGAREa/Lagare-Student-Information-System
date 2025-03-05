@@ -30,7 +30,7 @@
                                     <td>{{ $grade->subject->name }}</td>
                                     <td>{{ $grade->grade }}</td>
                                     <td>
-                                        @if($grade->grade >= 75)
+                                        @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
                                             <span class="badge badge-success">Passed</span>
                                         @else
                                             <span class="badge badge-danger">Failed</span>
@@ -43,8 +43,7 @@
                                         <a href="{{ route('admin.grades.edit', $grade) }}" class="btn btn-edit btn-sm">
                                             Edit
                                         </a>
-                                        <button type="button" class="btn btn-delete btn-sm delete-grade" 
-                                                data-id="{{ $grade->id }}"
+                                        <button type="button" class="btn btn-delete btn-sm delete-item" 
                                                 data-url="{{ route('admin.grades.destroy', $grade) }}">
                                             Delete
                                         </button>
@@ -53,6 +52,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-end mt-3">
+                        {{ $grades->onEachSide(2)->links() }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,34 +64,85 @@
 
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             var table = $('#dataTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                paging: false,
+                ordering: true,
                 order: [[0, 'asc']],
-                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-                     '<"row"<"col-sm-12"tr>>' +
-                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                dom: '<"row"<"col-sm-12 col-md-6"f>>',
                 language: {
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
                     search: "Search registered grades:",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
-                    }
+                    info: "_TOTAL_ entries",
+                    infoEmpty: "0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)"
                 }
             });
 
             // Handle delete button clicks
-            $('.delete-grade').click(function() {
+            $(document).on('click', '.delete-item', function() {
                 var button = $(this);
                 var url = button.data('url');
-                confirmDelete(url, table, button.closest('tr'));
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Record has been deleted successfully.',
+                                    'success'
+                                ).then(() => {
+                                    button.closest('tr').remove();
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    xhr.responseJSON?.message || 'Cannot delete this record.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
+
+    <style>
+        .badge-success {
+            background-color: #1cc88a;
+        }
+        .badge-danger {
+            background-color: #e74a3b;
+        }
+        .pagination {
+            margin: 0;
+        }
+        .page-item.active .page-link {
+            background-color: #4e73df;
+            border-color: #4e73df;
+        }
+        .page-link {
+            color: #4e73df;
+        }
+        .page-link:hover {
+            color: #2e59d9;
+        }
+    </style>
 @endsection

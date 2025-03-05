@@ -13,5 +13,16 @@ class Subject extends Model
         'name',
         'subject_code',
         'units',
+        'description'
     ];
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
+    }
 }

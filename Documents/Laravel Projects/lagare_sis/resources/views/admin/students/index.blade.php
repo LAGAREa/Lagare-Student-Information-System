@@ -49,6 +49,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-end mt-3">
+                        {{ $students->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,24 +62,16 @@
     <script>
         $(document).ready(function() {
             var table = $('#dataTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                paging: false,  // Disable DataTables pagination since we're using Laravel's
+                ordering: true,
                 order: [[0, 'asc']],
                 dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-                     '<"row"<"col-sm-12"tr>>' +
-                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                     '<"row"<"col-sm-12"tr>>',
                 language: {
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
                     search: "Search registered students:",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
-                    }
+                    info: "_TOTAL_ entries",
+                    infoEmpty: "0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)"
                 }
             });
 

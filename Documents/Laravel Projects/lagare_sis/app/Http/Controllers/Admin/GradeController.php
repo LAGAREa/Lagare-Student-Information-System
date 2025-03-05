@@ -13,7 +13,7 @@ class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::with(['student', 'subject'])->get();
+        $grades = Grade::with(['student', 'subject'])->paginate(10);
         return view('admin.grades.index', compact('grades'));
     }
 
@@ -92,8 +92,18 @@ class GradeController extends Controller
 
     public function destroy(Grade $grade)
     {
-        $grade->delete();
-        return redirect()->route('admin.grades')->with('success', 'Grade deleted successfully.');
+        try {
+            // Delete the grade
+            $grade->delete();
+
+            return response()->json([
+                'message' => 'Grade deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the grade.'
+            ], 500);
+        }
     }
 
     public function viewGrades()
@@ -111,9 +121,15 @@ class GradeController extends Controller
         return view('student.view-grades', compact('grades'));
     }
 
+    public function show(Grade $grade)
+    {
+        return view('admin.grades.show', compact('grade'));
+    }
+
     private function getRemark($grade)
     {
-        if ($grade >= 1.0 && $grade <= 3.0) {
+        $grade = floatval($grade);
+        if ($grade >= 1.0 && $grade <= 2.75) {
             return 'Passed';
         } else {
             return 'Failed';

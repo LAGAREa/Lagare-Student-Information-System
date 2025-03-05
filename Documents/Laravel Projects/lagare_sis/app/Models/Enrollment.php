@@ -14,6 +14,7 @@ class Enrollment extends Model
         'subject_id',
         'course',
         'semester',
+        'year_level'
     ];
 
     public function student()
@@ -24,5 +25,22 @@ class Enrollment extends Model
     public function subject()
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    public function grade()
+    {
+        return $this->hasOne(Grade::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($enrollment) {
+            // Delete associated grade when enrollment is deleted
+            if ($enrollment->grade) {
+                $enrollment->grade->delete();
+            }
+        });
     }
 }

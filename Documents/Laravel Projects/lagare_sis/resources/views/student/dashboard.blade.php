@@ -32,7 +32,7 @@
                                             <td>{{ $grade->subject->name }}</td>
                                             <td>{{ $grade->grade }}</td>
                                             <td>
-                                                @if($grade->grade >= 75)
+                                                @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
                                                     <span class="badge badge-success">Passed</span>
                                                 @else
                                                     <span class="badge badge-danger">Failed</span>

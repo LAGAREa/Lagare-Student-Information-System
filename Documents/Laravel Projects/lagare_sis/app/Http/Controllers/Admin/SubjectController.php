@@ -10,7 +10,8 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::orderBy('subject_code', 'asc')
+            ->paginate(10);
         return view('admin.subjects.index', compact('subjects'));
     }
 
@@ -52,8 +53,21 @@ class SubjectController extends Controller
 
     public function destroy(Subject $subject)
     {
-        $subject->delete();
-        return redirect()->route('admin.subjects')->with('success', 'Subject deleted successfully.');
+        try {
+            // Delete enrollments but keep grades
+            $subject->enrollments()->delete();
+            
+            // Delete the subject
+            $subject->delete();
+
+            return response()->json([
+                'message' => 'Subject deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the subject.'
+            ], 500);
+        }
     }
 
     public function show(Subject $subject)

@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Enrollment;
 use App\Models\Student;
 use App\Models\Subject;
+use Illuminate\Support\Facades\DB;
 
 class EnrollmentController extends Controller
 {
     public function index()
     {
-        $enrollments = Enrollment::with(['student', 'subject'])->get();
+        $enrollments = Enrollment::with(['student', 'subject'])
+            ->orderBy('id', 'asc')
+            ->paginate(10);
         return view('admin.enrollments.index', compact('enrollments'));
     }
 
@@ -67,8 +70,24 @@ class EnrollmentController extends Controller
 
     public function destroy(Enrollment $enrollment)
     {
-        $enrollment->delete();
-        return redirect()->route('admin.enrollments')->with('success', 'Enrollment deleted successfully.');
+        try {
+            // Start transaction
+            DB::beginTransaction();
+
+            // The grade deletion is handled by the Enrollment model's boot method
+            $enrollment->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Enrollment and associated grade have been deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'An error occurred while deleting the enrollment.'
+            ], 500);
+        }
     }
 
     public function show(Enrollment $enrollment)
