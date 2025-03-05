@@ -108,7 +108,7 @@
                 <li class="nav-item @if(request()->routeIs('admin.dashboard')) active @endif">
                     <a class="nav-link" href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Admin Dashboard</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
 
@@ -380,7 +380,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; LagareDev 2025</span>
                     </div>
                 </div>
             </footer>
