@@ -10,13 +10,13 @@
 
     <!-- Content Row -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
+        <div class="card-header py-3 d-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Enrolled Subjects</h6>
         </div>
         <div class="card-body">
             @if(count($subjects) > 0)
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Subject Code</th>
@@ -34,19 +34,19 @@
                                         ->first();
                                 @endphp
                                 <tr>
-                                    <td>{{ $subject->subject_code }}</td>
-                                    <td>{{ $subject->name }}</td>
-                                    <td>{{ $subject->description }}</td>
-                                    <td>{{ $subject->units }}</td>
-                                    <td>
+                                    <td class="align-middle">{{ $subject->subject_code }}</td>
+                                    <td class="align-middle">{{ $subject->name }}</td>
+                                    <td class="align-middle">{{ $subject->description }}</td>
+                                    <td class="align-middle">{{ $subject->units }}</td>
+                                    <td class="align-middle">
                                         @if($grade)
                                             @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
-                                                <span class="badge badge-success">Passed ({{ $grade->grade }})</span>
+                                                <span class="badge bg-success">Passed ({{ $grade->grade }})</span>
                                             @else
-                                                <span class="badge badge-danger">Failed ({{ $grade->grade }})</span>
+                                                <span class="badge bg-danger">Failed ({{ $grade->grade }})</span>
                                             @endif
                                         @else
-                                            <span class="badge badge-info">Ongoing</span>
+                                            <span class="badge bg-info">Ongoing</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -55,7 +55,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-center">You are not enrolled in any subjects.</p>
+                <p class="text-center py-3 text-muted">You are not enrolled in any subjects.</p>
             @endif
         </div>
     </div>
@@ -72,7 +72,8 @@
                 info: "Showing _START_ to _END_ of _TOTAL_ subjects",
                 infoEmpty: "No subjects found",
                 infoFiltered: "(filtered from _MAX_ total subjects)"
-            }
+            },
+            order: [[0, 'asc']]
         });
     });
 </script>
@@ -82,17 +83,37 @@
 .badge {
     padding: 0.5em 1em;
     font-size: 0.75rem;
+    font-weight: 600;
 }
-.badge-success {
-    background-color: #1cc88a;
-    color: white;
+.bg-success {
+    background-color: var(--success-color) !important;
 }
-.badge-danger {
-    background-color: #e74a3b;
-    color: white;
+.bg-danger {
+    background-color: var(--danger-color) !important;
 }
-.badge-info {
-    background-color: #36b9cc;
-    color: white;
+.bg-info {
+    background-color: var(--info-color) !important;
+}
+.table {
+    margin-bottom: 0;
+}
+.table td, .table th {
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #e3e6f0;
+}
+.table thead th {
+    border-bottom: 2px solid #e3e6f0;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #4e73df;
+}
+.table-hover tbody tr:hover {
+    background-color: #f8f9fc;
+}
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
 }
 </style> 

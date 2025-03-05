@@ -54,12 +54,14 @@ class SubjectController extends Controller
     public function destroy(Subject $subject)
     {
         try {
-            // Delete enrollments but keep grades
-            $subject->enrollments()->delete();
-            
-            // Delete the subject
-            $subject->delete();
+            // Check if subject has enrollments
+            if ($subject->enrollments()->count() > 0) {
+                return response()->json([
+                    'message' => 'Cannot delete subject. There are students enrolled in this subject.'
+                ], 400);
+            }
 
+            $subject->delete();
             return response()->json([
                 'message' => 'Subject deleted successfully.'
             ]);

@@ -30,19 +30,28 @@
             --info-color: #36b9cc;
             --warning-color: #f6c23e;
             --danger-color: #e74a3b;
+            --sidebar-width: 14rem;
+            --sidebar-width-collapsed: 6.5rem;
         }
         
+        body {
+            overflow-x: hidden;
+        }
+
         .sidebar {
-            width: 14rem;
+            width: var(--sidebar-width);
             min-height: 100vh;
             background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
             transition: all 0.3s ease-in-out;
             position: fixed;
-            z-index: 1;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
         }
         
         .sidebar.toggled {
-            width: 6.5rem;
+            width: var(--sidebar-width-collapsed);
         }
 
         .sidebar-header {
@@ -57,6 +66,57 @@
             padding: 1rem 0;
         }
 
+        .sidebar .nav-item {
+            position: relative;
+            margin: 0.5rem 0;
+        }
+        
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            width: 1.5rem;
+            font-size: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar.toggled .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .sidebar.toggled .nav-link i {
+            margin: 0;
+            font-size: 1.25rem;
+            width: auto;
+        }
+        
+        .sidebar.toggled .nav-link span,
+        .sidebar.toggled .sidebar-brand-text {
+            display: none;
+        }
+
+        .sidebar .nav-item .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-item.active .nav-link {
+            color: #fff;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
         #sidebarToggle {
             color: white;
             background: transparent;
@@ -67,6 +127,7 @@
             justify-content: center;
             width: 2rem;
             height: 2rem;
+            transition: all 0.3s ease;
         }
 
         #sidebarToggle:hover {
@@ -76,104 +137,99 @@
 
         #sidebarToggle i {
             font-size: 1.2rem;
+            transition: all 0.3s ease;
+            transform: rotate(0deg);
         }
 
-        .sidebar .nav-item {
-            position: relative;
+        .sidebar.toggled #sidebarToggle i:before {
+            content: "\f0c9";
         }
-        
-        .sidebar .nav-link {
+
+        .sidebar.toggled #sidebarToggle i {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-divider {
+            border-color: rgba(255,255,255,0.15);
+            margin: 1rem 0;
+        }
+
+        #wrapper {
             display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        
-        .sidebar .nav-link i {
-            margin-right: 0.75rem;
-            width: 1.5rem;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        
-        .sidebar.toggled .nav-link {
-            justify-content: center;
-            padding: 1rem;
-        }
-        
-        .sidebar.toggled .nav-link i {
-            margin: 0;
-            font-size: 1.1rem;
-            width: auto;
-        }
-        
-        .sidebar.toggled .nav-link span {
-            display: none;
-        }
-        
-        .sidebar.toggled .sidebar-brand-text {
-            display: none;
-        }
-
-        .sidebar .nav-item .nav-link:hover {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar .nav-item.active .nav-link {
-            color: #fff;
-            font-weight: 600;
+            width: 100%;
+            min-height: 100vh;
         }
 
         .content-wrapper {
-            margin-left: 14rem;
-            transition: margin 0.3s ease-in-out;
+            width: 100%;
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease-in-out;
+            min-height: 100vh;
+            padding: 0;
+            background-color: #f8f9fc;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar.toggled ~ .content-wrapper {
-            margin-left: 6.5rem;
+        .container-fluid {
+            padding: 1.5rem;
+        }
+
+        .sidebar.toggled ~ #content-wrapper {
+            margin-left: var(--sidebar-width-collapsed);
         }
 
         @media (max-width: 768px) {
             .sidebar {
-                width: 6.5rem;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.toggled {
+                transform: translateX(0);
             }
             
             .sidebar .nav-link {
-                justify-content: center;
                 padding: 1rem;
+                justify-content: center;
             }
             
             .sidebar .nav-link i {
                 margin: 0;
-                font-size: 1.1rem;
+                font-size: 1.25rem;
                 width: auto;
             }
             
-            .sidebar .nav-link span {
-                display: none;
-            }
-            
+            .sidebar .nav-link span,
             .sidebar .sidebar-brand-text {
                 display: none;
             }
 
             .content-wrapper {
-                margin-left: 6.5rem;
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar.toggled ~ #content-wrapper {
+                margin-left: var(--sidebar-width-collapsed);
             }
         }
 
         .topbar {
             height: 4.375rem;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 0 1.5rem;
+            margin: 0;
+            background-color: #fff;
+        }
+
+        .navbar {
+            padding: 0;
         }
 
         .topbar .navbar-nav {
             display: flex;
             align-items: center;
-            padding-right: 1rem;
+            padding-right: 0;
             margin-left: auto;
         }
 
@@ -200,26 +256,102 @@
 
         .dropdown-menu {
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            min-width: 12rem;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 0.35rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .dropdown-item i {
+            margin-right: 0.75rem;
+            width: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fc;
+            color: #4e73df;
         }
 
         .dropdown-item:active {
             background-color: #4e73df;
+            color: #fff;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
         }
 
         .img-profile {
             height: 2rem;
             width: 2rem;
+            border: 2px solid #eaecf4;
         }
 
-        .topbar .nav-item .nav-link .user-name {
-            margin-right: 0.5rem;
+        .user-dropdown {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            position: relative;
+        }
+
+        .user-dropdown .chevron {
+            margin-left: 0.5rem;
+            transition: transform 0.2s ease;
+            color: #858796;
+            font-size: 0.75rem;
+        }
+
+        .show .chevron {
+            transform: rotate(180deg);
+        }
+
+        .user-dropdown .user-info {
+            margin-right: 1rem;
+            text-align: right;
+        }
+
+        .user-dropdown .user-name {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875rem;
             color: #3a3b45;
+            margin-bottom: 0.125rem;
+        }
+
+        .user-dropdown .user-role {
+            display: block;
+            font-size: 0.75rem;
+            color: #858796;
+        }
+
+        .footer {
+            padding: 1.5rem;
+            background-color: #fff;
+            border-top: 1px solid #e3e6f0;
+            margin-top: auto;
+        }
+
+        .footer .copyright {
+            color: #858796;
+            font-size: 0.875rem;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
-    <div class="d-flex">
+    <div id="wrapper">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
@@ -227,7 +359,7 @@
                     {{ Auth::user()->role == 'admin' ? 'ADMIN' : 'STUDENT' }}
                 </a>
                 <button class="btn p-0" id="sidebarToggle">
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
 
@@ -295,23 +427,25 @@
         </div>
 
         <!-- Content Wrapper -->
-        <div class="flex-grow-1">
+        <div id="content-wrapper" class="content-wrapper">
             <!-- Top Navigation -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="navbar navbar-expand navbar-light topbar static-top shadow">
                 <!-- Sidebar Toggle (Mobile) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none">
                     <i class="fa fa-bars"></i>
                 </button>
 
                 <!-- Topbar Navbar -->
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - Notifications -->
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Notifications -->
-                            <span class="badge badge-danger badge-counter">0</span>
+                            @if($notificationCount ?? 0 > 0)
+                                <span class="badge badge-danger badge-counter">{{ $notificationCount }}</span>
+                            @endif
                         </a>
                         <!-- Dropdown - Notifications -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in"
@@ -329,23 +463,29 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="user-name d-none d-lg-inline">{{ Auth::user()->name }}</span>
-                            <img class="img-profile rounded-circle"
-                                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=4e73df&color=ffffff">
+                            <div class="user-dropdown">
+                                <div class="user-info">
+                                    <span class="user-name">{{ Auth::user()->name }}</span>
+                                    <span class="user-role">{{ ucfirst(Auth::user()->role) }}</span>
+                                </div>
+                                <img class="img-profile rounded-circle"
+                                    src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=4e73df&color=ffffff">
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </div>
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
                             aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
+                                <i class="fas fa-user fa-sm fa-fw text-gray-400"></i>
+                                Profile Settings
                             </a>
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="dropdown-item">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
+                                    Log Out
                                 </button>
                             </form>
                         </div>
@@ -354,9 +494,16 @@
             </nav>
 
             <!-- Main Content -->
-            <div class="content-wrapper">
+            <div class="container-fluid">
                 @yield('content')
             </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="copyright">
+                    &copy; {{ date('Y') }} lagareDev. All rights reserved.
+                </div>
+            </footer>
         </div>
     </div>
 
@@ -379,6 +526,13 @@
             if ($(window).width() < 768) {
                 $('.sidebar').addClass('toggled');
             }
+        });
+
+        // Handle dropdown chevron rotation
+        $('#userDropdown').on('show.bs.dropdown', function () {
+            $(this).find('.chevron').addClass('show');
+        }).on('hide.bs.dropdown', function () {
+            $(this).find('.chevron').removeClass('show');
         });
     </script>
 

@@ -13,7 +13,9 @@ class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::with(['student', 'subject'])->paginate(10);
+        $grades = Grade::with(['student', 'subject'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('admin.grades.index', compact('grades'));
     }
 
@@ -93,15 +95,28 @@ class GradeController extends Controller
     public function destroy(Grade $grade)
     {
         try {
+            // Get grade details for the success message
+            $studentName = $grade->student->name;
+            $subjectName = $grade->subject->name;
+            $gradeValue = $grade->grade;
+
             // Delete the grade
             $grade->delete();
 
+            // Log the deletion
+            \Log::info('Grade deleted successfully', [
+                'student' => $studentName,
+                'subject' => $subjectName,
+                'grade' => $gradeValue
+            ]);
+
             return response()->json([
-                'message' => 'Grade deleted successfully.'
+                'message' => "Grade for {$studentName} in {$subjectName} has been deleted successfully."
             ]);
         } catch (\Exception $e) {
+            \Log::error('Error deleting grade: ' . $e->getMessage());
             return response()->json([
-                'message' => 'An error occurred while deleting the grade.'
+                'message' => 'An error occurred while deleting the grade. Please try again.'
             ], 500);
         }
     }

@@ -71,19 +71,22 @@ class EnrollmentController extends Controller
     public function destroy(Enrollment $enrollment)
     {
         try {
-            // Start transaction
-            DB::beginTransaction();
+            // Check if enrollment has grades
+            if ($enrollment->grades()->count() > 0) {
+                return response()->json([
+                    'message' => 'Cannot delete enrollment. This student has grades for this subject.'
+                ], 400);
+            }
 
-            // The grade deletion is handled by the Enrollment model's boot method
+            // Get enrollment details for the success message
+            $studentName = $enrollment->student->name;
+            $subjectName = $enrollment->subject->name;
+
             $enrollment->delete();
-
-            DB::commit();
-
             return response()->json([
-                'message' => 'Enrollment and associated grade have been deleted successfully.'
+                'message' => "Enrollment for {$studentName} in {$subjectName} has been deleted successfully."
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
             return response()->json([
                 'message' => 'An error occurred while deleting the enrollment.'
             ], 500);

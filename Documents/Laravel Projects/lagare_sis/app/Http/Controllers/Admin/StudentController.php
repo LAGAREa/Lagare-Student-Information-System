@@ -67,24 +67,28 @@ class StudentController extends Controller
 
     public function destroy(Student $student)
     {
-        // Check if student has enrollments
-        if ($student->enrollments()->count() > 0) {
-            return redirect()->route('admin.students')
-                ->with('error', 'Cannot delete student. This student is currently enrolled in one or more subjects.');
-        }
-
         try {
-            // Delete related grades first
-            $student->grades()->delete();
-            
-            // Delete the student
-            $student->delete();
+            // Check if student has enrollments or grades
+            if ($student->enrollments()->count() > 0) {
+                return response()->json([
+                    'message' => 'Cannot delete student. This student is enrolled in one or more subjects.'
+                ], 400);
+            }
 
-            return redirect()->route('admin.students')
-                ->with('success', 'Student has been deleted successfully.');
+            if ($student->grades()->count() > 0) {
+                return response()->json([
+                    'message' => 'Cannot delete student. This student has grades recorded.'
+                ], 400);
+            }
+
+            $student->delete();
+            return response()->json([
+                'message' => 'Student deleted successfully.'
+            ]);
         } catch (\Exception $e) {
-            return redirect()->route('admin.students')
-                ->with('error', 'An error occurred while deleting the student.');
+            return response()->json([
+                'message' => 'An error occurred while deleting the student.'
+            ], 500);
         }
     }
 

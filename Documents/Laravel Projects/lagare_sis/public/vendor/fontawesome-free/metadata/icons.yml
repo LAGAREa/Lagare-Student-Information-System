@@ -16546,7 +16546,7 @@ sign-language:
 sign-out-alt:
   changes:
     - 5.0.0
-  label: Alternate Sign Out
+  label: Alternate Log Out
   search:
     terms:
       - arrow
