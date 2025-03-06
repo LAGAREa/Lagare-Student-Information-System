@@ -11,7 +11,10 @@ class CheckRole
     public function handle(Request $request, Closure $next, $role)
     {
         if (!$request->user() || $request->user()->role !== $role) {
-            abort(403, 'Unauthorized action.');
+            if ($request->user() && $request->user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('dashboard');
         }
 
         return $next($request);
