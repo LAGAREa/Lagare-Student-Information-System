@@ -19,11 +19,10 @@
                     <table class="table table-bordered table-hover" id="subjectsTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="bg-primary text-white">Subject Code</th>
-                                <th class="bg-primary text-white">Name</th>
-                                <th class="bg-primary text-white">Description</th>
-                                <th class="bg-primary text-white">Units</th>
-                                <th class="bg-primary text-white" style="width: 150px">Actions</th>
+                                <th class="bg-primary text-white" style="width: 180px">Subject Code</th>
+                                <th class="bg-primary text-white" style="width: 200px">Subject Name</th>
+                                <th class="bg-primary text-white" style="width: 150px">Units</th>
+                                <th class="bg-primary text-white" style="width: 80px">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,7 +30,6 @@
                                 <tr>
                                     <td>{{ $subject->subject_code }}</td>
                                     <td>{{ $subject->name }}</td>
-                                    <td>{{ $subject->description }}</td>
                                     <td>{{ $subject->units }}</td>
                                     <td>
                                         <div class="btn-group">

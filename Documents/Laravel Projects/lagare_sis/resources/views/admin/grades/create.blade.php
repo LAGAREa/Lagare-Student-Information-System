@@ -43,7 +43,17 @@
                 <label for="grade">Grade</label>
                 <input type="number" step="0.01" class="form-control" id="grade" name="grade" value="{{ old('grade') }}" required>
             </div>
-            <button type="submit" class="btn btn-primary">Add Grade</button>
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Add Grade</button>
+                <a href="{{ route('admin.grades') }}" class="btn btn-secondary ml-2">Cancel</a>
+            </div>
         </form>
     </div>
+
+    <style>
+    .d-flex.gap-2 {
+        display: flex;
+        gap: 0.5rem;
+    }
+    </style>
 @endsection

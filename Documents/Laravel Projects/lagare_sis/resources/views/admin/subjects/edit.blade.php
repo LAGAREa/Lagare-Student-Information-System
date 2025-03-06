@@ -29,7 +29,17 @@
                 <label for="units">Units</label>
                 <input type="number" class="form-control" id="units" name="units" value="{{ $subject->units }}" required>
             </div>
-            <button type="submit" class="btn btn-primary">Update Subject</button>
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Update Subject</button>
+                <a href="{{ route('admin.subjects') }}" class="btn btn-secondary ml-2">Cancel</a>
+            </div>
         </form>
     </div>
+
+    <style>
+    .d-flex.gap-2 {
+        display: flex;
+        gap: 0.5rem;
+    }
+    </style>
 @endsection

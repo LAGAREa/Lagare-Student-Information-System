@@ -50,7 +50,17 @@
                     <option value="5th Year" {{ $student->year_level === '5th Year' ? 'selected' : '' }}>5th Year</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Update Student</button>
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Update Student</button>
+                <a href="{{ route('admin.students') }}" class="btn btn-secondary ml-2">Cancel</a>
+            </div>
         </form>
     </div>
+
+    <style>
+    .d-flex.gap-2 {
+        display: flex;
+        gap: 0.5rem;
+    }
+    </style>
 @endsection
