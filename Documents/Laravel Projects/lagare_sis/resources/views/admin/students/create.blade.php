@@ -5,63 +5,116 @@
 @section('content')
     <div class="container">
         <h1 class="my-4">Add Student</h1>
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Add New Student</h6>
             </div>
-        @endif
-        <form action="{{ route('admin.students.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="student_id">Student ID</label>
-                <input type="text" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" required>
+            <div class="card-body">
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('admin.students.store') }}">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="student_id">Student ID</label>
+                                <input type="text" name="student_id" id="student_id" class="form-control @error('student_id') is-invalid @enderror" value="{{ old('student_id') }}" required>
+                                @error('student_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="course">Course</label>
+                                <input type="text" name="course" id="course" class="form-control @error('course') is-invalid @enderror" value="{{ old('course') }}" required>
+                                @error('course')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year_level">Year Level</label>
+                        <select class="form-control" id="year_level" name="year_level" required>
+                            <option value="">Select Year Level</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                        <a href="{{ route('admin.students') }}" class="btn btn-secondary ms-2">Cancel</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <select class="form-control" id="name" name="name" required>
-                    <option value="">Select Student</option>
-                    @foreach($users as $user)
-                        <option value="{{ $user->name }}" data-email="{{ $user->email }}">{{ $user->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required readonly>
-            </div>
-            <div class="form-group">
-                <label for="course">Course</label>
-                <select class="form-control" id="course" name="course" required>
-                    <option value="">Select Course</option>
-                    <option value="BSIT">Bachelor of Science in Information Technology</option>
-                    <option value="BSCS">Bachelor of Science in Computer Science</option>
-                    <option value="BSIS">Bachelor of Science in Information Systems</option>
-                    <option value="BSEMC">Bachelor of Science in Entertainment and Multimedia Computing</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="year_level">Year Level</label>
-                <select class="form-control" id="year_level" name="year_level" required>
-                    <option value="">Select Year Level</option>
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
-                    <option value="5th Year">5th Year</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Student</button>
-        </form>
+        </div>
     </div>
 
-    <script>
-        document.getElementById('name').addEventListener('change', function() {
-            var email = this.options[this.selectedIndex].getAttribute('data-email');
-            document.getElementById('email').value = email;
-        });
-    </script>
+    <style>
+    .btn {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+        border-radius: 0.35rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-primary {
+        background-color: #0D6EFD;
+        border-color: #0D6EFD;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5c636a;
+        border-color: #565e64;
+    }
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+    </style>
 @endsection

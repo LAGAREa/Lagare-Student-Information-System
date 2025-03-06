@@ -33,7 +33,7 @@ class GradeController extends Controller
         $request->validate([
             'student_id' => 'required|exists:students,id',
             'subject_id' => 'required|exists:subjects,id',
-            'grade' => 'required|numeric|between:1.0,5.0',
+            'grade' => ['required', 'regex:/^(1\.00|1\.25|1\.50|1\.75|2\.00|2\.25|2\.50|2\.75|3\.00|5\.00|INC|FA)$/'],
         ]);
 
         // Check if the student is enrolled in the selected subject
@@ -57,7 +57,12 @@ class GradeController extends Controller
         $data = $request->all();
         $data['student_name'] = Student::find($data['student_id'])->name;
         $data['subject_name'] = Subject::find($data['subject_id'])->name;
-        $data['grade'] = number_format($data['grade'], 2);
+        
+        // Only format numeric grades
+        if (!in_array($data['grade'], ['INC', 'FA'])) {
+            $data['grade'] = number_format(floatval($data['grade']), 2);
+        }
+        
         $data['remark'] = $this->getRemark($data['grade']);
         $data['curriculum_evaluation'] = $data['remark'];
 
@@ -143,6 +148,12 @@ class GradeController extends Controller
 
     private function getRemark($grade)
     {
+        if ($grade === 'INC') {
+            return 'Incomplete';
+        } elseif ($grade === 'FA') {
+            return 'Failed (Absent)';
+        }
+
         $grade = floatval($grade);
         if ($grade >= 1.0 && $grade <= 2.75) {
             return 'Passed';
