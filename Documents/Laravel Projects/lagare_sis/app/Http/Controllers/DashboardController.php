@@ -30,7 +30,7 @@ class DashboardController extends Controller
         }
 
         // Get enrolled subjects count
-        $enrolledSubjectsCount = $student->enrollments()->count();
+        $enrolledSubjectsCount = Enrollment::where('student_id', $student->id)->count();
 
         // Get grades with their subjects
         $grades = Grade::with('subject')
@@ -39,16 +39,18 @@ class DashboardController extends Controller
 
         // Calculate passed subjects count
         $passedSubjectsCount = $grades->filter(function($grade) {
-            return $grade->isPassing();
+            return $grade->grade >= 1.0 && $grade->grade <= 2.75;
         })->count();
 
         // Calculate GPA
         $totalGradePoints = $grades->sum(function($grade) {
-            return $grade->grade * $grade->subject->units;
+            return $grade->grade * ($grade->subject->units ?? 0);
         });
+        
         $totalUnits = $grades->sum(function($grade) {
-            return $grade->subject->units;
+            return $grade->subject->units ?? 0;
         });
+        
         $gpa = $totalUnits > 0 ? $totalGradePoints / $totalUnits : 0;
 
         // Get current subjects (enrolled but no grades yet)

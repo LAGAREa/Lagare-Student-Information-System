@@ -15,6 +15,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Student Dashboard Route (No middleware)
+Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+
 // Common authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -26,9 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Student routes
     Route::middleware(['role:student'])->group(function () {
-        Route::get('/student/dashboard', function () {
-            return view('student.dashboard');
-        })->name('student.dashboard');
         Route::get('/student/view-grades', [GradeController::class, 'viewGrades'])->name('student.view-grades');
         Route::get('/student/subjects', [SubjectController::class, 'studentSubjects'])->name('student.subjects');
     });
