@@ -12,17 +12,21 @@
     <div class="row">
         <!-- Students Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Students</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $studentCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-info text-white me-3">
+                            <i class="fas fa-users"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Students</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($studentCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i> Total Registered Students
+                        </small>
                     </div>
                 </div>
             </div>
@@ -30,17 +34,21 @@
 
         <!-- Subjects Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $subjectCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-danger text-white me-3">
+                            <i class="fas fa-book"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Subjects</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($subjectCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-list me-1"></i> Available Subjects
+                        </small>
                     </div>
                 </div>
             </div>
@@ -48,17 +56,21 @@
 
         <!-- Enrollments Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Enrollments</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enrollmentCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-success text-white me-3">
+                            <i class="fas fa-user-graduate"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Enrollments</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($enrollmentCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="far fa-calendar me-1"></i> Total Enrollments
+                        </small>
                     </div>
                 </div>
             </div>
@@ -66,17 +78,21 @@
 
         <!-- Grades Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Grades</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $gradeCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-warning text-white me-3">
+                            <i class="fas fa-star"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-star fa-2x text-gray-300"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Grades</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($gradeCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-check-circle me-1"></i> Total Grades Recorded
+                        </small>
                     </div>
                 </div>
             </div>
@@ -145,9 +161,9 @@
                                     <td>{{ $grade->grade }}</td>
                                     <td>
                                         @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
-                                            <span class="badge badge-success">Passed</span>
+                                            <span class="badge bg-success">Passed</span>
                                         @else
-                                            <span class="badge badge-danger">Failed</span>
+                                            <span class="badge bg-danger">Failed</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -166,32 +182,65 @@
 
     <style>
         .card {
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            border: none;
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .border-left-primary {
-            border-left: 4px solid #4e73df !important;
+        .card-body {
+            padding: 1.5rem;
         }
-        .border-left-success {
-            border-left: 4px solid #1cc88a !important;
+        .icon-square {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
         }
-        .border-left-info {
-            border-left: 4px solid #36b9cc !important;
+        .icon-square i {
+            font-size: 1.5rem;
         }
-        .border-left-warning {
-            border-left: 4px solid #f6c23e !important;
+        .bg-info {
+            background-color: #00acee !important;
+        }
+        .bg-danger {
+            background-color: #e91e63 !important;
+        }
+        .bg-success {
+            background-color: #4CAF50 !important;
+        }
+        .bg-warning {
+            background-color: #ff9800 !important;
+        }
+        .text-muted {
+            color: #858796 !important;
+        }
+        .me-3 {
+            margin-right: 1rem !important;
+        }
+        .me-1 {
+            margin-right: 0.25rem !important;
+        }
+        .mt-3 {
+            margin-top: 1rem !important;
+        }
+        .text-xs {
+            font-size: 0.75rem;
+        }
+        .h4 {
+            font-size: 1.5rem;
+            line-height: 1.2;
         }
         .badge {
             padding: 0.5em 1em;
+            font-weight: 500;
             border-radius: 0.25rem;
-        }
-        .badge-success {
-            background-color: #1cc88a;
-        }
-        .badge-danger {
-            background-color: #e74a3b;
         }
         .table td, .table th {
             vertical-align: middle;

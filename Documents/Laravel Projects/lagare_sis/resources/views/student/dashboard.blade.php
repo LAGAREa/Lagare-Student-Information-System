@@ -12,17 +12,21 @@
     <div class="row">
         <!-- Total Subjects Card -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enrolledSubjectsCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-info text-white me-3">
+                            <i class="fas fa-book"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-book fa-2x text-primary opacity-50"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Total Subjects</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($enrolledSubjectsCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-list me-1"></i> Currently Enrolled Subjects
+                        </small>
                     </div>
                 </div>
             </div>
@@ -30,17 +34,21 @@
 
         <!-- Passed Subjects Card -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Passed Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $passedSubjectsCount ?? '0' }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-success text-white me-3">
+                            <i class="fas fa-check-circle"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check-circle fa-2x text-success opacity-50"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Passed Subjects</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($passedSubjectsCount ?? 0) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-trophy me-1"></i> Successfully Completed
+                        </small>
                     </div>
                 </div>
             </div>
@@ -48,17 +56,21 @@
 
         <!-- GPA Card -->
         <div class="col-xl-4 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Current GPA</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($gpa ?? 0, 2) }}</div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-square bg-warning text-white me-3">
+                            <i class="fas fa-star"></i>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-star fa-2x text-info opacity-50"></i>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase">Current GPA</div>
+                            <div class="h4 mb-0 font-weight-bold">{{ number_format($gpa ?? 0, 2) }}</div>
                         </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-chart-line me-1"></i> Overall Performance
+                        </small>
                     </div>
                 </div>
             </div>
@@ -147,31 +159,65 @@
     <style>
         .card {
             transition: all 0.3s ease;
+            border: none;
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .border-left-primary {
-            border-left: 4px solid var(--primary-color) !important;
+        .card-body {
+            padding: 1.5rem;
         }
-        .border-left-success {
-            border-left: 4px solid var(--success-color) !important;
+        .icon-square {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
         }
-        .border-left-info {
-            border-left: 4px solid var(--info-color) !important;
+        .icon-square i {
+            font-size: 1.5rem;
+        }
+        .bg-info {
+            background-color: #00acee !important;
+        }
+        .bg-success {
+            background-color: #4CAF50 !important;
+        }
+        .bg-warning {
+            background-color: #ff9800 !important;
+        }
+        .text-muted {
+            color: #858796 !important;
+        }
+        .me-3 {
+            margin-right: 1rem !important;
+        }
+        .me-1 {
+            margin-right: 0.25rem !important;
+        }
+        .mt-3 {
+            margin-top: 1rem !important;
+        }
+        .text-xs {
+            font-size: 0.75rem;
+        }
+        .h4 {
+            font-size: 1.5rem;
+            line-height: 1.2;
         }
         .badge {
             padding: 0.5em 1em;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .table {
-            margin-bottom: 0;
+            font-weight: 500;
+            border-radius: 0.25rem;
         }
         .table td, .table th {
-            padding: 1rem;
             vertical-align: middle;
+            padding: 1rem;
             border-top: 1px solid #e3e6f0;
         }
         .table thead th {
@@ -183,9 +229,6 @@
         }
         .table-hover tbody tr:hover {
             background-color: #f8f9fc;
-        }
-        .opacity-50 {
-            opacity: 0.5;
         }
         .card-header {
             background-color: #f8f9fc;
