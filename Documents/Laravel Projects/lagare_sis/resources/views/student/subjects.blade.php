@@ -110,7 +110,7 @@
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.8rem;
-    color: #4e73df;
+    color: #0C6291;
 }
 .table-hover tbody tr:hover {
     background-color: #f8f9fc;

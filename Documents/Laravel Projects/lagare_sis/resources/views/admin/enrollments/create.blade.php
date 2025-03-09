@@ -50,9 +50,7 @@
                 <select class="form-control" id="subject_id" name="subject_id" required>
                     <option value="">Select Subject</option>
                     @foreach($subjects as $subject)
-                        <option value="{{ $subject->id }}">
-                            {{ $subject->subject_code }} - {{ $subject->name }}
-                        </option>
+                        <option value="{{ $subject->id }}">{{ $subject->subject_code }} - {{ $subject->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -73,82 +71,88 @@
 
             // Handle subject availability
             const studentId = this.value;
-            const subjectSelect = $('#subject_id');
+            const subjectSelect = document.getElementById('subject_id');
+            const originalOptions = Array.from(subjectSelect.options);
             
-            // Enable all options first
-            subjectSelect.find('option').prop('disabled', false);
+            // Reset subject selection
+            subjectSelect.value = '';
             
             if (studentId) {
                 // Hide subjects that are already enrolled for this student
                 $.get(`/admin/enrollments/student/${studentId}/subjects`, function(enrolledSubjects) {
-                    enrolledSubjects.forEach(subjectId => {
-                        subjectSelect.find(`option[value="${subjectId}"]`).prop('disabled', true);
-                    });
-                    subjectSelect.select2('destroy').select2({
-                        width: '100%',
-                        theme: 'bootstrap4'
+                    // Remove all options except the first one (placeholder)
+                    while (subjectSelect.options.length > 1) {
+                        subjectSelect.remove(1);
+                    }
+                    
+                    // Add back only non-enrolled subjects
+                    originalOptions.slice(1).forEach(option => {
+                        if (!enrolledSubjects.includes(parseInt(option.value))) {
+                            subjectSelect.add(option.cloneNode(true));
+                        }
                     });
                 });
+            } else {
+                // Reset to original options
+                while (subjectSelect.options.length > 1) {
+                    subjectSelect.remove(1);
+                }
+                originalOptions.slice(1).forEach(option => {
+                    subjectSelect.add(option.cloneNode(true));
+                });
             }
-            
-            // Clear subject selection
-            subjectSelect.val('').trigger('change');
-        });
-
-        // Initialize Select2 for semester and subject dropdowns only
-        $('#semester, #subject_id').select2({
-            width: '100%',
-            theme: 'bootstrap4'
         });
     </script>
 
     <style>
-        .select2-container .select2-selection--single {
+        .form-control {
             height: 38px;
-            padding: 8px;
+            padding: 6px 12px;
             border: 1px solid #ced4da;
             border-radius: 4px;
+            width: 100%;
         }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 36px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: normal;
-            padding-left: 0;
-        }
-        .select2-container--default .select2-search--dropdown .select2-search__field {
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-        .select2-dropdown {
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-        .select2-results__option[aria-disabled=true] {
-            color: #6c757d;
-            background-color: #e9ecef;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        .d-flex.gap-2 {
-            display: flex;
-            gap: 0.5rem;
-        }
+
         .form-control[readonly] {
             background-color: #f8f9fc;
             cursor: not-allowed;
         }
-        select.form-control {
-            cursor: pointer;
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
         }
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: #4e73df;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Status badge styles for the admin dashboard */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-passed {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .status-failed {
+            background-color: #EF4444;
+            color: white;
         }
     </style>
 @endsection

@@ -36,7 +36,7 @@
     
     <style>
         :root {
-            --primary-color: #4e73df;
+            --primary-color: #0C6291;
             --secondary-color: #858796;
             --success-color: #1cc88a;
             --info-color: #36b9cc;
@@ -53,7 +53,7 @@
         .sidebar {
             width: var(--sidebar-width);
             min-height: 100vh;
-            background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+            background-color: #0C6291;
             transition: all 0.3s ease-in-out;
             position: fixed;
             left: 0;
@@ -61,6 +61,7 @@
             bottom: 0;
             z-index: 100;
         }
+
         
         .sidebar.toggled {
             width: var(--sidebar-width-collapsed);
@@ -292,11 +293,11 @@
 
         .dropdown-item:hover {
             background-color: #f8f9fc;
-            color: #4e73df;
+            color: #305252;
         }
 
         .dropdown-item:active {
-            background-color: #4e73df;
+            background-color: #0C6291;
             color: #fff;
         }
 
@@ -513,7 +514,7 @@
             <!-- Footer -->
             <footer class="footer">
                 <div class="copyright">
-                    &copy; {{ date('Y') }} lagareDev. All rights reserved.
+                    &copy; {{ date('Y') }} JellyDev. All rights reserved.
                 </div>
             </footer>
         </div>

@@ -28,9 +28,9 @@
         color: white;
     }
     .table thead th {
-        background-color: #4e73df;
+        background-color: #0C6291;
         color: white;
-        border-color: #4e73df;
+        border-color: #0C6291;
     }
     .dataTables_wrapper .dataTables_filter {
         text-align: right;

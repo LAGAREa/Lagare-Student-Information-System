@@ -60,7 +60,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Add Grade</button>
+                <button type="submit" class="btn" style="background-color: #0C6291; color: white;">Add Grade</button>
                 <a href="{{ route('admin.grades') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>

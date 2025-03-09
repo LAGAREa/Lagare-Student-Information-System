@@ -61,7 +61,7 @@
 
     <style>
     .bg-primary {
-        background-color: #4e73df !important;
+        background-color: #0C6291 !important;
     }
     .btn-group {
         display: flex;

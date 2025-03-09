@@ -139,9 +139,9 @@
                                     <td>{{ $grade->grade }}</td>
                                     <td>
                                         @if($grade->grade >= 1.0 && $grade->grade <= 2.75)
-                                            <span class="badge badge-success">Passed</span>
+                                            <span class="status-badge status-passed">Passed</span>
                                         @else
-                                            <span class="badge badge-danger">Failed</span>
+                                            <span class="status-badge status-failed">Failed</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -199,6 +199,26 @@
         color: #2c3e50;
         font-size: 1.5rem;
         font-weight: bold;
+    }
+
+    /* Status badge styles */
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 500;
+        font-size: 0.875rem;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .status-passed {
+        background-color: #10B981;
+        color: white;
+    }
+
+    .status-failed {
+        background-color: #EF4444;
+        color: white;
     }
     </style>
 @endsection

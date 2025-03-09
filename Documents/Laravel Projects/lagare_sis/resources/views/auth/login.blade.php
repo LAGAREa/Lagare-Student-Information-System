@@ -4,191 +4,294 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SIS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
         body {
-            background-image: url('/img/buksu-bg.png') !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            background-size: cover !important;
+            background: url('/img/buksu-bg.png') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .page-wrapper {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0;
             padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .login-container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 448px;
+        }
+        h2 {
+              color: #444;
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 25px;
         }
         .form-control {
-            border-radius: 5px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e3e6f0;
-            background: rgba(255, 255, 255, 0.9);
+            height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #202124;
+            transition: border-color 0.2s;
+            width: 100%;
+            background: #fff;
+        }
+        .form-control:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 1px #1a73e8;
+            outline: none;
+        }
+        .form-control::placeholder {
+            color: #5f6368;
+            opacity: 0.8;
         }
         .btn-primary {
-            background: white;
-            color: #3c4043;
             width: 100%;
-            padding: 0.75rem;
-            border-radius: 24px;
-            font-weight: 500;
-            border: 1px solid #dadce0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-            font-size: 14px;
-            height: 40px;
-            padding-left: 24px;
-            padding-right: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            background-color: #4e73df;
+            height: 48px;
+            background: #1a73e8;
             color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 24px;
+            transition: background-color 0.2s;
         }
         .btn-primary:hover {
-            background-color: #2e59d9;
-            color: white;
-            text-decoration: none;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-        }
-        .google-btn {
-            background: white;
-            color: #3c4043;
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 24px;
-            font-weight: 500;
-            border: 1px solid #dadce0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-            font-size: 14px;
-            height: 40px;
-            padding-left: 24px;
-            padding-right: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-        .google-btn:hover {
-            background: #f8f9fa;
-            color: #3c4043;
-            text-decoration: none;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-        }
-        .google-btn img {
-            width: 18px;
-            height: 18px;
-        }
-        .form-check {
-            margin: 1rem 0;
+            background: #1557b0;
         }
         .links {
-            margin-top: 1rem;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-            color: #3c4043;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #5f6368;
         }
         .links a {
-            color: #4e73df;
+            color: #1a73e8;
             text-decoration: none;
-            transition: color 0.2s;
             font-weight: 500;
         }
         .links a:hover {
-            color: #2e59d9;
+            text-decoration: underline;
+        }
+        .saved-info-dropdown {
+            display: none;
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 4px;
+            z-index: 1000;
+            padding: 8px 0;
+        }
+        .saved-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid #dadce0;
+        }
+        .saved-info-header h6 {
+            margin: 0;
+            font-size: 14px;
+            color: #202124;
+        }
+        .saved-info-close {
+            cursor: pointer;
+            font-size: 18px;
+            color: #5f6368;
+            padding: 4px;
+        }
+        .saved-info-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .saved-info-item:hover {
+            background: #f8f9fa;
+        }
+        .saved-info-email {
+            font-size: 14px;
+            color: #202124;
+        }
+        .saved-info-name {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        .last-used {
+            font-size: 12px;
+            color: #1a73e8;
+            background: #e8f0fe;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .manage-info-link {
+            padding: 8px 16px;
+            border-top: 1px solid #dadce0;
+        }
+        .manage-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a73e8;
             text-decoration: none;
+            font-size: 14px;
+        }
+        .manage-link:hover {
+            text-decoration: none;
+            color: #1557b0;
+        }
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .form-check {
+            margin: 16px 0;
+        }
+        .form-check-input {
+            margin-right: 8px;
+        }
+        .form-check-label {
+            color: #5f6368;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
         <div class="login-container">
-            <h2 class="text-center mb-4">Login account</h2>
+        <img src="/img/backgrounds/logo.png" alt="BukSU Logo" style="display: block; margin: 0 auto 20px; width: 100px; height: auto;">
+        <h2>Login account</h2>
             
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login') }}" autocomplete="on">
                 @csrf
-                <div class="mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Enter Email Address..." required value="{{ old('email') }}">
+            <div class="input-wrapper">
+                    <input type="email" 
+                           name="email" 
+                           id="email"
+                           class="form-control" 
+                           placeholder="Enter Email Address..." 
+                           required 
+                           value="{{ old('email') }}" 
+                           autocomplete="username">
+                <div class="saved-info-dropdown" id="savedInfoDropdown">
+                    <div class="saved-info-header">
+                        <h6>Saved Info</h6>
+                        <span class="saved-info-close">×</span>
+                    </div>
+                    <div class="saved-info-content">
+                        <!-- Saved credentials will be dynamically added here -->
+                    </div>
+                    <div class="manage-info-link">
+                        <a href="#" class="manage-link">
+                            <i class="fas fa-cog"></i>
+                            Manage personal info
+                        </a>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+
+            <div class="input-wrapper">
+                    <input type="password" 
+                           name="password" 
+                           class="form-control" 
+                           placeholder="Password" 
+                           required 
+                           autocomplete="current-password">
                 </div>
+
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
                     <label class="form-check-label" for="remember">Remember Me</label>
                 </div>
+
                 <button type="submit" class="btn btn-primary">
                     <span>Login</span>
                 </button>
-            </form>
-
-            <form method="GET" action="{{ route('auth.google') }}">
-                <button type="submit" class="google-btn">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=" alt="Google logo">
-                    Continue with Google
-                </button>
-            </form>
 
             <div class="links">
                 No account?
                 <a href="{{ route('register') }}">Sign up</a>
             </div>
-        </div>
+        </form>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if background image is loading
-            const img = new Image();
-            img.onload = function() {
-                console.log('Background image loaded successfully');
-            };
-            img.onerror = function() {
-                console.error('Background image failed to load');
-                // Try to load with asset helper
-                const assetImg = new Image();
-                assetImg.src = "{{ asset('img/buksu-bg.png') }}";
-                assetImg.onload = () => console.log('Image loaded with asset helper');
-                assetImg.onerror = () => console.error('Image failed to load with asset helper');
-            };
-            img.src = '/img/buksu-bg.png';
+            const emailInput = document.getElementById('email');
+            const savedInfoDropdown = document.getElementById('savedInfoDropdown');
+            const closeBtn = document.querySelector('.saved-info-close');
+
+            // Sample saved credentials
+            const savedCredentials = [
+                { email: 'jungkook@gmail.com', name: 'Jeon Jungkook', isLastUsed: true },
+                { email: 'vonlib@yahoo.com', name: '122444 • vonlib', isLastUsed: false },
+                { email: '2201100346@student.buksu.edu.ph', name: 'Angel', isLastUsed: false }
+            ];
+
+            // Show dropdown when input is focused
+            emailInput.addEventListener('focus', function() {
+                savedInfoDropdown.style.display = 'block';
+                renderSavedCredentials();
+            });
+
+            // Close dropdown when close button is clicked
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                savedInfoDropdown.style.display = 'none';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!emailInput.contains(e.target) && !savedInfoDropdown.contains(e.target)) {
+                    savedInfoDropdown.style.display = 'none';
+                }
+            });
+
+            function renderSavedCredentials() {
+                const content = document.querySelector('.saved-info-content');
+                content.innerHTML = '';
+
+                savedCredentials.forEach(cred => {
+                    const item = document.createElement('div');
+                    item.className = 'saved-info-item';
+                    
+                    let html = 
+                        <div class="saved-info-email">
+                            ${cred.email}
+                            ${cred.isLastUsed ? '<span class="last-used">Last Used</span>' : ''}
+                        </div>;
+                    
+                    if (cred.name) {
+                        html += <div class="saved-info-name">${cred.name}</div>;
+                    }
+
+                    item.innerHTML = html;
+
+                    item.addEventListener('click', function() {
+                        emailInput.value = cred.email;
+                        savedInfoDropdown.style.display = 'none';
+                    });
+
+                    content.appendChild(item);
+                });
+            }
         });
     </script>
-
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 </body>
 </html>
