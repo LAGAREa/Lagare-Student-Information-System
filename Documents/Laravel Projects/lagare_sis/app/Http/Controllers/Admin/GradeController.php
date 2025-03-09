@@ -141,6 +141,12 @@ class GradeController extends Controller
         return view('admin.grades.show', compact('grade'));
     }
 
+    public function getGradedSubjects(Student $student)
+    {
+        $gradedSubjects = Grade::where('student_id', $student->id)->pluck('subject_id');
+        return response()->json($gradedSubjects);
+    }
+
     private function getRemark($grade)
     {
         $grade = floatval($grade);

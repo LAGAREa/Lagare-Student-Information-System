@@ -97,4 +97,10 @@ class EnrollmentController extends Controller
     {
         return view('admin.enrollments.show', compact('enrollment'));
     }
+
+    public function getEnrolledSubjects(Student $student)
+    {
+        $enrolledSubjects = Enrollment::where('student_id', $student->id)->pluck('subject_id');
+        return response()->json($enrolledSubjects);
+    }
 }

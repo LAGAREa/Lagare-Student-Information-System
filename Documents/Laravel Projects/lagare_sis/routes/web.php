@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/enrollments/{enrollment}/edit', [EnrollmentController::class, 'edit'])->name('enrollments.edit');
             Route::patch('/enrollments/{enrollment}', [EnrollmentController::class, 'update'])->name('enrollments.update');
             Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
+            Route::get('/enrollments/student/{student}/subjects', [EnrollmentController::class, 'getEnrolledSubjects'])->name('admin.enrollments.enrolled-subjects');
 
             // Grades management
             Route::get('/grades', [GradeController::class, 'index'])->name('grades');
@@ -73,6 +74,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/grades/{grade}/edit', [GradeController::class, 'edit'])->name('grades.edit');
             Route::patch('/grades/{grade}', [GradeController::class, 'update'])->name('grades.update');
             Route::delete('/grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');
+
+            // Graded subjects management
+            Route::get('/grades/student/{student}/subjects', [GradeController::class, 'getGradedSubjects'])->name('admin.grades.graded-subjects');
         });
     });
 });

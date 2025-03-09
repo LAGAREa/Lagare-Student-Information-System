@@ -3,79 +3,73 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    </div>
-
-    <!-- Content Row -->
-    <div class="row">
-        <!-- Students Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Students</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $studentCount ?? '0' }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+    <div class="container">
+        <h1 class="my-4">Admin Dashboard</h1>
+        
+        <div class="row">
+            <!-- Twitter-like Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-cyan">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="stat-label">Students</div>
+                                <div class="stat-value">{{ $studentCount ?? '0' }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Subjects Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Subjects</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $subjectCount ?? '0' }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-book fa-2x text-gray-300"></i>
+            <!-- Analytics-like Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-pink">
+                                <i class="fas fa-chart-bar text-white"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="stat-label">Enrollments</div>
+                                <div class="stat-value">{{ $enrollmentCount ?? '0' }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Enrollments Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Enrollments</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enrollmentCount ?? '0' }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+            <!-- Revenue Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-green">
+                                <i class="fas fa-book text-white"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="stat-label">Subjects</div>
+                                <div class="stat-value">{{ $subjectCount ?? '0' }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Grades Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Grades</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $gradeCount ?? '0' }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-star fa-2x text-gray-300"></i>
+            <!-- Storage Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle bg-orange">
+                                <i class="fas fa-star text-white"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="stat-label">Grades</div>
+                                <div class="stat-value">{{ $gradeCount ?? '0' }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,36 +159,46 @@
     </div>
 
     <style>
-        .card {
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .border-left-primary {
-            border-left: 4px solid #4e73df !important;
-        }
-        .border-left-success {
-            border-left: 4px solid #1cc88a !important;
-        }
-        .border-left-info {
-            border-left: 4px solid #36b9cc !important;
-        }
-        .border-left-warning {
-            border-left: 4px solid #f6c23e !important;
-        }
-        .badge {
-            padding: 0.5em 1em;
-            border-radius: 0.25rem;
-        }
-        .badge-success {
-            background-color: #1cc88a;
-        }
-        .badge-danger {
-            background-color: #e74a3b;
-        }
-        .table td, .table th {
-            vertical-align: middle;
-        }
+    .dashboard-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+    }
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon-circle i {
+        font-size: 20px;
+    }
+    .bg-cyan {
+        background-color: #00c3d9;
+    }
+    .bg-pink {
+        background-color: #e91e63;
+    }
+    .bg-green {
+        background-color: #4caf50;
+    }
+    .bg-orange {
+        background-color: #ff9800;
+    }
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.875rem;
+    }
+    .stat-value {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
     </style>
 @endsection

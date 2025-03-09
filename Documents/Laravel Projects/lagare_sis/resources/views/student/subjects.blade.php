@@ -12,6 +12,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Enrolled Subjects</h6>
+            <div class="ml-auto">
+                <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search...">
+            </div>
         </div>
         <div class="card-body">
             @if(count($subjects) > 0)
@@ -64,16 +67,16 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             paging: false,
-            dom: '<"row"<"col-sm-12 col-md-6"f>>',
-            language: {
-                search: "Search subjects:",
-                info: "Showing _START_ to _END_ of _TOTAL_ subjects",
-                infoEmpty: "No subjects found",
-                infoFiltered: "(filtered from _MAX_ total subjects)"
-            },
+            info: false,
+            dom: 'rt',
             order: [[0, 'asc']]
+        });
+
+        // Custom search functionality
+        $('#searchInput').on('keyup', function() {
+            table.search(this.value).draw();
         });
     });
 </script>
@@ -115,5 +118,22 @@
 .card-header {
     background-color: #f8f9fc;
     border-bottom: 1px solid #e3e6f0;
+}
+#searchInput {
+    width: 250px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #6e707e;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+#searchInput:focus {
+    border-color: #bac8f3;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
 }
 </style> 
