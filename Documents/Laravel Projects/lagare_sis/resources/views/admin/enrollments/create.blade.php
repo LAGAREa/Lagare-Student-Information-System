@@ -17,27 +17,23 @@
         <form action="{{ route('admin.enrollments.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
-                <label for="student_name">Student Name</label>
-                <select class="form-control" id="student_name" name="student_id" required>
+                <label for="name">Name</label>
+                <select class="form-control" id="name" name="student_id" required>
                     <option value="">Select Student</option>
                     @foreach($students as $student)
-                        <option value="{{ $student->id }}" 
-                                data-email="{{ $student->email }}"
-                                data-course="{{ $student->course }}">
-                            {{ $student->name }}
-                        </option>
+                        <option value="{{ $student->id }}" data-email="{{ $student->email }}" data-course="{{ $student->course }}">{{ $student->name }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="form-group mb-3">
-                <label for="student_email">Email</label>
-                <input type="text" class="form-control" id="student_email" readonly>
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" readonly>
             </div>
 
             <div class="form-group mb-3">
-                <label for="student_course">Course</label>
-                <input type="text" class="form-control" id="student_course" readonly>
+                <label for="course">Course</label>
+                <input type="text" class="form-control" id="course" readonly>
             </div>
 
             <div class="form-group mb-3">
@@ -69,59 +65,40 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            // Initialize Select2
-            $('#student_name').select2({
-                width: '100%',
-                theme: 'bootstrap4',
-                placeholder: 'Select Student'
-            });
+        document.getElementById('name').addEventListener('change', function() {
+            var email = this.options[this.selectedIndex].getAttribute('data-email');
+            var course = this.options[this.selectedIndex].getAttribute('data-course');
+            document.getElementById('email').value = email;
+            document.getElementById('course').value = course;
 
-            $('#semester').select2({
-                width: '100%',
-                theme: 'bootstrap4',
-                placeholder: 'Select Semester'
-            });
-
-            $('#subject_id').select2({
-                width: '100%',
-                theme: 'bootstrap4',
-                placeholder: 'Select Subject'
-            });
-
-            // Handle student selection
-            $('#student_name').on('change', function() {
-                var $selectedOption = $(this).find('option:selected');
-                var email = $selectedOption.data('email') || '';
-                var course = $selectedOption.data('course') || '';
-                
-                $('#student_email').val(email);
-                $('#student_course').val(course);
-
-                // Handle subject availability
-                var studentId = $(this).val();
-                var $subjectSelect = $('#subject_id');
-                
-                // Enable all options first
-                $subjectSelect.find('option').prop('disabled', false);
-                
-                if (studentId) {
-                    // Hide subjects that are already enrolled for this student
-                    $.get(`/admin/enrollments/student/${studentId}/subjects`, function(enrolledSubjects) {
-                        enrolledSubjects.forEach(function(subjectId) {
-                            $subjectSelect.find(`option[value="${subjectId}"]`).prop('disabled', true);
-                        });
-                        $subjectSelect.select2('destroy').select2({
-                            width: '100%',
-                            theme: 'bootstrap4',
-                            placeholder: 'Select Subject'
-                        });
+            // Handle subject availability
+            const studentId = this.value;
+            const subjectSelect = $('#subject_id');
+            
+            // Enable all options first
+            subjectSelect.find('option').prop('disabled', false);
+            
+            if (studentId) {
+                // Hide subjects that are already enrolled for this student
+                $.get(`/admin/enrollments/student/${studentId}/subjects`, function(enrolledSubjects) {
+                    enrolledSubjects.forEach(subjectId => {
+                        subjectSelect.find(`option[value="${subjectId}"]`).prop('disabled', true);
                     });
-                }
-                
-                // Clear subject selection
-                $subjectSelect.val(null).trigger('change');
-            });
+                    subjectSelect.select2('destroy').select2({
+                        width: '100%',
+                        theme: 'bootstrap4'
+                    });
+                });
+            }
+            
+            // Clear subject selection
+            subjectSelect.val('').trigger('change');
+        });
+
+        // Initialize Select2 for semester and subject dropdowns only
+        $('#semester, #subject_id').select2({
+            width: '100%',
+            theme: 'bootstrap4'
         });
     </script>
 
