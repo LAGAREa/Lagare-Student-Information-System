@@ -28,11 +28,12 @@
             max-width: 448px;
         }
         h2 {
-              color: #444;
+            color: #202124;
             font-size: 24px;
-            font-weight: 500;
+            font-weight: 400;
+            line-height: 1.3333;
+            margin-bottom: 30px;
             text-align: center;
-            margin-bottom: 25px;
         }
         .form-control {
             height: 48px;
@@ -175,7 +176,6 @@
 </head>
 <body>
         <div class="login-container">
-        <img src="/img/backgrounds/logo.png" alt="BukSU Logo" style="display: block; margin: 0 auto 20px; width: 100px; height: auto;">
         <h2>Login account</h2>
             
             <form method="POST" action="{{ route('login') }}" autocomplete="on">

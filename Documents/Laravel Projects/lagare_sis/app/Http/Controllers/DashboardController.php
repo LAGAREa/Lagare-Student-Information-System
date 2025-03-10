@@ -57,12 +57,7 @@ class DashboardController extends Controller
         $currentSubjects = Subject::whereIn('id', function($query) use ($student) {
             $query->select('subject_id')
                 ->from('enrollments')
-                ->where('student_id', $student->id)
-                ->whereNotIn('subject_id', function($q) use ($student) {
-                    $q->select('subject_id')
-                        ->from('grades')
-                        ->where('student_id', $student->id);
-                });
+                ->where('student_id', $student->id);
         })->get();
 
         // Get recent grades

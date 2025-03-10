@@ -24,7 +24,6 @@
                             <tr>
                                 <th>Subject Code</th>
                                 <th>Subject Name</th>
-                                <th>Description</th>
                                 <th>Units</th>
                                 <th>Status</th>
                             </tr>
@@ -39,7 +38,6 @@
                                 <tr>
                                     <td class="align-middle">{{ $subject->subject_code }}</td>
                                     <td class="align-middle">{{ $subject->name }}</td>
-                                    <td class="align-middle">{{ $subject->description }}</td>
                                     <td class="align-middle">{{ $subject->units }}</td>
                                     <td class="align-middle">
                                         @if($grade)
@@ -136,4 +134,4 @@
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
 }
-</style> 
+</style>

@@ -63,8 +63,7 @@
             transition: all 0.3s ease;
         }
         .btn-register:hover {
-            background: #1557b0;
-            color: white;
+            background: #4263eb;
             transform: translateY(-1px);
         }
         .login-link {
@@ -110,6 +109,31 @@
         }
         select.form-select:focus {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%234c6ef5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .btn-google {
+            background: #fff;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-google:hover {
+            background: #f8f9fa;
+            border-color: #ccc;
+        }
+        .btn-google img {
+            width: 18px;
+            height: 18px;
         }
 
         /* Saved Info Dropdown Styles */
@@ -234,7 +258,6 @@
 
 <body>
     <div class="register-form">
-    <img src="/img/backgrounds/logo.png" alt="BukSU Logo" style="display: block; margin: 0 auto 15px; width: 65px; height: auto;">
         <h2>Register account</h2>
         
         @if($errors->any())
@@ -334,6 +357,13 @@
                 name="password_confirmation" placeholder="Confirm Password" required>
 
             <button type="submit" class="btn btn-register">Register</button>
+
+            <div class="social-login">
+                <button type="button" class="btn btn-google">
+                    <img src="https://www.google.com/favicon.ico" alt="Google icon">
+                    Continue with Google
+                </button>
+            </div>
 
             <div class="login-link">
                 Already have an account? <a href="{{ route('login') }}">Sign in</a>
