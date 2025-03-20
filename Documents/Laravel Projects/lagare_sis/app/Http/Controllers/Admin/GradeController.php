@@ -8,6 +8,7 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Enrollment;
+use Illuminate\Http\Request\GradeRequest;
 
 class GradeController extends Controller
 {
@@ -28,13 +29,9 @@ class GradeController extends Controller
         return view('admin.grades.create', compact('students', 'subjects', 'grades'));
     }
 
-    public function store(Request $request)
+    public function store(GradeRequest $request)
     {
-        $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'grade' => 'required|numeric|between:1.0,5.0',
-        ]);
+        $request=$request->validated();
 
         // Check if the student is enrolled in the selected subject
         $enrollment = Enrollment::where('student_id', $request->student_id)
